@@ -1,17 +1,19 @@
 <style media="screen" lang="scss">
-  .row {
-    .categories {
-      margin-top: 41px;
-    }
-  }
 </style>
 
 <template lang="jade">
-  search
-  menu
+  v-search
+  v-menu
 </template>
 
 <script>
-  import Search from './Search'
-  import Menu from './Menu'
+  import VSearch from './VSearch'
+  import VMenu from './VMenu'
+
+  export default {
+    components: {
+      VSearch,
+      VMenu
+    }
+  }
 </script>

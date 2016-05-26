@@ -3,9 +3,16 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     background: #262626;
     height: 98px;
     padding-left: 30px;
+
+    .logo {
+      background: #fff;
+      height: 34px;
+      width: 85px;
+    }
 
     .navbar-toggle {
       position: relative;
@@ -21,7 +28,7 @@
     }
 
     .icon-bar {
-      background-color: #888;
+      background-color: #fff;
       display: block;
       width: 22px;
       height: 2px;
@@ -33,6 +40,8 @@
 
 <template lang="jade">
   header
+    .logo
+
     button.navbar-toggle.collapsed(type="button")
       span.icon-bar
       span.icon-bar
