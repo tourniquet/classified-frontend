@@ -8,12 +8,13 @@
       margin-bottom: 20px;
 
       a:link, a:visited, a:active, a:hover {
+        font-size: 15px;
         font-weight: 700;
-        letter-spacing: .1em;
+        letter-spacing: .07em;
         color: black;
         text-decoration: none;
-        height: 67px;
-        line-height: 67px;
+        height: 58px;
+        line-height: 58px;
         display: block;
         padding-left: 30px;
       }
@@ -23,10 +24,10 @@
       }
 
       ul.subcategories {
-        @extend ul.categories;
+        padding-left: 29px;
 
         li.subcategory-title {
-          margin: 30px 0;
+          margin: 28px 0;
         }
       }
     }

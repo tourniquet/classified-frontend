@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: space-between;
     background: #262626;
-    height: 98px;
+    height: 93px;
     padding-left: 30px;
 
     .logo {
@@ -30,7 +30,7 @@
     .icon-bar {
       background-color: #fff;
       display: block;
-      width: 22px;
+      width: 26px;
       height: 2px;
       border-radius: 1px;
       margin-bottom: 5px;
