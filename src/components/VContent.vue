@@ -3,17 +3,20 @@
 
 <template lang="jade">
   v-search
-  v-menu
+  //- v-menu
+  newad
 </template>
 
 <script>
   import VSearch from './VSearch'
   import VMenu from './VMenu'
+  import Newad from './Newad'
 
   export default {
     components: {
       VSearch,
-      VMenu
+      VMenu,
+      Newad
     }
   }
 </script>
