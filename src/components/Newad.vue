@@ -1,8 +1,8 @@
 <style lang="scss">
-  form {
+  .form {
     padding: 0 30px;
 
-    label {
+    .label {
       display: inline-block;
       font-size: 14px;
       font-weight: 700;
@@ -10,24 +10,44 @@
       margin-bottom: 18px;
     }
 
-    select {
+    .button {
       display: block;
+      background: #fff;
       border: 2px solid #f6f6f6;
       border-radius: 8px;
       height: 58px;
       width: 100%;
       padding-left: 15px;
-      margin-bottom: 25px;
+      margin-bottom: 18px;
       font-size: 14px;
       letter-spacing: 0.08em;
+      text-align: left;
     }
 
-    input {
-      @extend select;
+    .ul-width {
+      position: relative;
+      width: 100%;
+    }
+
+    .hide-ul-menu {
+      display: none !important;
+    }
+
+    .show-ul-menu {
+      @extend .button;
+      position: absolute;
+      background: #fff;
+      box-sizing: border-box;
+      box-shadow: 2px 2px 6px #888888;
+      border-radius: 3px;
+    }
+
+    .input {
+      @extend .button;
       box-sizing: border-box;
     }
 
-    textarea {
+    .description {
       display: block;
       border: 2px solid #f6f6f6;
       border-radius: 8px;
@@ -37,22 +57,22 @@
       resize: none;
     }
 
-    label#label-for-price {
+    .label-for-price {
       display: block;
     }
 
-    input#price {
+    .price {
       display: inline-block;
       width: 64%;
     }
 
-    select#currency {
+    .currency {
       display: inline-block;
       float: right;
       width: 33%;
     }
 
-    button {
+    .post-ad {
       display: table;
       background: transparent linear-gradient(#e7774a, #df5b27) repeat scroll 0% 0%;
       border: 0px none;
@@ -66,46 +86,109 @@
 </style>
 
 <template lang="jade">
-  form
-    label(for="cateogry") Categoria
-    select#category
-      option selectaţi categoria
-      option Imobiliare
-      option Transport
-      option Telefoane
+  form.form
+    label.label(for="category") Categoria
+    button.button(type="button", @click="showMenu") {{ category }}
+    .ul-width
+      ul.show-ul-menu(:class="{'hide-ul-menu': !expandButton}")
+        li(v-for="item in items", @click="setButton($index, 'category')") {{ item.title}}
 
-    label(for="subcategory") Subcategoria
-    select#subcategory
-      option selectaţi subcategoria
-      option Imobiliare
-      option Transport
-      option Telefoane
+    label.label(for="subcategory") Subcategoria
+    button.button(type="button", @click="showMenu") {{ subcategory }}
+    .ul-width
+      ul.show-ul-menu(:class="{'hide-ul-menu': !expandButton}")
+        li(v-for="item in items", @click="setButton($index, 'subcategory')") {{ item.title}}
 
-    label(for="region") Regiunea
-    select#region
-      option Orhei
-      option Bolohan
-      option Piatra
+    label.label(for="region") Regiunea
+    button.button(type="button", @click="showMenu") selectați regiunea
+    .ul-width
+      ul.show-ul-menu(:class="{'hide-ul-menu': !expandButton}")
+        li(v-for="item in items", @click="setButton($index)") {{ item.title}}
 
-    label(for="title") Titlul anunţului
-    input#title(type="text")
+    label.label(for="title") Titlul anunţului
+    input.input.title(type="text", name="title", v-model="title")
 
-    label(for="description") Descriere
-    textarea#description
+    label.label(for="description") Descriere
+    textarea.description(name="description", v-model="description")
 
-    label#contacts Contacte
-    input#phone(type="text")
-    input#name(type="text")
+    label.label.contacts Contacte
+    input.input.phone(type="text", name="phone", v-model="phone")
+    input.input.contact-name(type="text", name="contact-name", v-model="contactName")
 
-    label#label-for-price(for="price") Preţ
-    input#price(type="text")
-    select#currency
-      option lei
-      option $
-      option €
+    label.label.label-for-price(for="price") Preţ
+    input.input.price(type="text", name="price", v-model="price")
+    .ul-width.currency
+      button.button(type="button", @click="showMenu")
+      ul.show-ul-menu(:class="{'hide-ul-menu': !expandButton}")
+        li lei
+        li $
+        li €
 
-    button(type="button") Postează anunţ
+    button.post-ad(type="button", @click="postAd") Postează anunţ
 </template>
 
 <script>
+  import io from '../sails'
+
+  var data = {
+    expandButton: false,
+    items: [
+      {
+        title: 'Imobiliare',
+        slug: 'real-estate'
+      },
+      {
+        title: 'Automobile',
+        slug: 'cars'
+      },
+      {
+        title: 'Telefoane',
+        slug: 'phones'
+      }
+    ],
+    category: 'Alege categoria',
+    subcategory: 'Alege subcategoria',
+    title: '',
+    description: '',
+    phone: '',
+    contactName: '',
+    price: '',
+    currency: ''
+  }
+
+  export default {
+    data () {
+      return data
+    },
+    methods: {
+      showMenu () {
+        if (this.expandButton) {
+          this.expandButton = false
+          return
+        }
+        this.expandButton = true
+      },
+
+      setButton (index, button) {
+        this[button] = this.items[index].title
+        this.expandButton = false
+      },
+
+      postAd () {
+        console.log('hei!')
+        io.socket.post('/ad/create', {
+          title: this.category,
+          description: this.subcategory
+        }, (data, res) => {
+          console.log(data)
+          console.log(res.statusCode)
+        })
+      }
+    },
+    ready () {
+      io.socket.get('/category/fibn', (data) => {
+        this.categories = data
+      })
+    }
+  }
 </script>
