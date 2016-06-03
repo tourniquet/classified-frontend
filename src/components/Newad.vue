@@ -88,19 +88,21 @@
 <template lang="jade">
   form.form
     label.label(for="category") Categoria
-    button.button(type="button", @click="showMenu") {{ category }}
+    button.button(type="button", @click="showMenu('categoryButton')") {{ category.title }}
     .ul-width
-      ul.show-ul-menu(:class="{'hide-ul-menu': !expandButton}")
-        li(v-for="item in items", @click="setButton($index, 'category')") {{ item.title}}
+      ul.show-ul-menu(:class="{'hide-ul-menu': !buttons.categoryButton}")
+        li Alege categoria
+        li(v-for="category in categories", @click="setCategory($index)") {{ category.title }}
 
     label.label(for="subcategory") Subcategoria
-    button.button(type="button", @click="showMenu") {{ subcategory }}
+    button.button(type="button", @click="showMenu('subcategoryButton')") {{ subcategory.title }}
     .ul-width
-      ul.show-ul-menu(:class="{'hide-ul-menu': !expandButton}")
-        li(v-for="item in items", @click="setButton($index, 'subcategory')") {{ item.title}}
+      ul.show-ul-menu(:class="{'hide-ul-menu': !subcategoryButton}")
+        li Alege subcategoria
+        li(v-for="subcategory in subcategories", @click="setSubcategory($index)") {{ subcategory.title}}
 
     label.label(for="region") Regiunea
-    button.button(type="button", @click="showMenu") selectați regiunea
+    button.button(type="button", @click="showMenu('regionButton')") selectați regiunea
     .ul-width
       ul.show-ul-menu(:class="{'hide-ul-menu': !expandButton}")
         li(v-for="item in items", @click="setButton($index)") {{ item.title}}
@@ -112,17 +114,17 @@
     textarea.description(name="description", v-model="description")
 
     label.label.contacts Contacte
-    input.input.phone(type="text", name="phone", v-model="phone")
-    input.input.contact-name(type="text", name="contact-name", v-model="contactName")
+    input.input.phone(type="text", name="phone", placeholder="telefon", v-model="phone")
+    input.input.contact-name(type="text", name="contact-name", placeholder="nume de contact", v-model="contactName")
 
     label.label.label-for-price(for="price") Preţ
     input.input.price(type="text", name="price", v-model="price")
     .ul-width.currency
-      button.button(type="button", @click="showMenu")
+      button.button(type="button", @click="showMenu('currencyButton')") {{ currency }}
       ul.show-ul-menu(:class="{'hide-ul-menu': !expandButton}")
-        li lei
-        li $
-        li €
+        li(@click="setCurrency('lei')") lei
+        li(@click="setCurrency('$')") $
+        li(@click="setCurrency('€')") €
 
     button.post-ad(type="button", @click="postAd") Postează anunţ
 </template>
@@ -132,28 +134,22 @@
 
   var data = {
     expandButton: false,
-    items: [
-      {
-        title: 'Imobiliare',
-        slug: 'real-estate'
-      },
-      {
-        title: 'Automobile',
-        slug: 'cars'
-      },
-      {
-        title: 'Telefoane',
-        slug: 'phones'
-      }
-    ],
-    category: 'Alege categoria',
-    subcategory: 'Alege subcategoria',
+    categories: '',
+    subcategories: '',
+    category: '',
+    subcategory: '',
     title: '',
     description: '',
     phone: '',
     contactName: '',
     price: '',
-    currency: ''
+    currency: '',
+    buttons: {
+      categoryButton: false,
+      subcategoryButton: false,
+      regionButton: false,
+      currencyButton: false
+    }
   }
 
   export default {
@@ -161,32 +157,52 @@
       return data
     },
     methods: {
-      showMenu () {
-        if (this.expandButton) {
-          this.expandButton = false
+      showMenu (button) {
+        if (this.buttons[button]) {
+          this.buttons[button] = false
           return
         }
-        this.expandButton = true
+        this.buttons[button] = true
       },
 
-      setButton (index, button) {
-        this[button] = this.items[index].title
-        this.expandButton = false
+      setCategory (index) {
+        this.category = this.categories[index]
+        this.buttons.categoryButton = false
+
+        io.socket.get('/subcategory/find/', {
+          category: index
+        }, (data) => {
+          this.subcategories = data
+        })
+      },
+
+      setSubcategory (index) {
+        this.subcategory = this.subcategories[index]
+        this.buttons.subcategoryButton = false
+      },
+
+      setCurrency (currency) {
+        this.currency = currency
+        this.buttons.currencyButton = false
       },
 
       postAd () {
-        console.log('hei!')
         io.socket.post('/ad/create', {
-          title: this.category,
-          description: this.subcategory
+          category: this.category.id,
+          subcategory: this.subcategory.id,
+          title: this.title,
+          description: this.description,
+          phone: this.phone,
+          contactName: this.contactName,
+          price: this.price,
+          currency: this.currency
         }, (data, res) => {
-          console.log(data)
-          console.log(res.statusCode)
+          res.statusCode
         })
       }
     },
     ready () {
-      io.socket.get('/category/fibn', (data) => {
+      io.socket.get('/category/find', (data) => {
         this.categories = data
       })
     }
