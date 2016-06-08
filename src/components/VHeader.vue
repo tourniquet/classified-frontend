@@ -40,8 +40,8 @@
 
 <template lang="jade">
   header
+    modal
     .logo
-
     button.navbar-toggle.collapsed(type="button")
       span.icon-bar
       span.icon-bar
@@ -49,4 +49,11 @@
 </template>
 
 <script type="text/javascript">
+  import Modal from './Modal'
+
+  export default {
+    components: {
+      Modal
+    }
+  }
 </script>

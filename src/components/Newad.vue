@@ -10,7 +10,7 @@
       margin-bottom: 18px;
     }
 
-    .button {
+    .input {
       display: block;
       background: #fff;
       border: 2px solid #f6f6f6;
@@ -22,28 +22,6 @@
       font-size: 14px;
       letter-spacing: 0.08em;
       text-align: left;
-    }
-
-    .ul-width {
-      position: relative;
-      width: 100%;
-    }
-
-    .hide-ul-menu {
-      display: none !important;
-    }
-
-    .show-ul-menu {
-      @extend .button;
-      position: absolute;
-      background: #fff;
-      box-sizing: border-box;
-      box-shadow: 2px 2px 6px #888888;
-      border-radius: 3px;
-    }
-
-    .input {
-      @extend .button;
       box-sizing: border-box;
     }
 
@@ -82,35 +60,32 @@
       width: 182px;
       height: 42px;
     }
+
+    .mandatory {
+      color: red;
+    }
   }
 </style>
 
 <template lang="jade">
   form.form
     label.label(for="category") Categoria
-    button.button(type="button", @click="showMenu('categoryButton')") {{ category.title }}
-    .ul-width
-      ul.show-ul-menu(:class="{'hide-ul-menu': !buttons.categoryButton}")
-        li Alege categoria
-        li(v-for="category in categories", @click="setCategory($index)") {{ category.title }}
+      span.mandatory *
+    drop-down-menu(:name="category.title", :elements="categories", @change="setCategory")
 
     label.label(for="subcategory") Subcategoria
-    button.button(type="button", @click="showMenu('subcategoryButton')") {{ subcategory.title }}
-    .ul-width
-      ul.show-ul-menu(:class="{'hide-ul-menu': !subcategoryButton}")
-        li Alege subcategoria
-        li(v-for="subcategory in subcategories", @click="setSubcategory($index)") {{ subcategory.title}}
+      span.mandatory *
+    drop-down-menu(:name="subcategory.title", :elements="subcategories", @change="setSubcategory")
 
     label.label(for="region") Regiunea
-    button.button(type="button", @click="showMenu('regionButton')") selectați regiunea
-    .ul-width
-      ul.show-ul-menu(:class="{'hide-ul-menu': !expandButton}")
-        li(v-for="item in items", @click="setButton($index)") {{ item.title}}
+    drop-down-menu(:name="subcategory.title", :elements="subcategories", @change="setSubcategory")
 
     label.label(for="title") Titlul anunţului
+      span.mandatory *
     input.input.title(type="text", name="title", v-model="title")
 
     label.label(for="description") Descriere
+      span.mandatory *
     textarea.description(name="description", v-model="description")
 
     label.label.contacts Contacte
@@ -120,75 +95,80 @@
     label.label.label-for-price(for="price") Preţ
     input.input.price(type="text", name="price", v-model="price")
     .ul-width.currency
-      button.button(type="button", @click="showMenu('currencyButton')") {{ currency }}
-      ul.show-ul-menu(:class="{'hide-ul-menu': !expandButton}")
-        li(@click="setCurrency('lei')") lei
-        li(@click="setCurrency('$')") $
-        li(@click="setCurrency('€')") €
+      drop-down-menu(:name="currency", :elements="currencies", @change="setCurrency")
 
     button.post-ad(type="button", @click="postAd") Postează anunţ
 </template>
 
 <script>
   import io from '../sails'
+  import DropDownMenu from './DropDownMenu'
 
   var data = {
     expandButton: false,
     categories: '',
     subcategories: '',
-    category: '',
-    subcategory: '',
+    category: {
+      title: 'Alege categoria',
+      id: ''
+    },
+    subcategory: {
+      title: 'Alege subcategoria',
+      id: ''
+    },
     title: '',
     description: '',
     phone: '',
     contactName: '',
     price: '',
-    currency: '',
-    buttons: {
-      categoryButton: false,
-      subcategoryButton: false,
-      regionButton: false,
-      currencyButton: false
-    }
+    currencies: [
+      {
+        title: 'lei'
+      },
+      {
+        title: '$'
+      },
+      {
+        title: '€'
+      }
+    ],
+    currency: 'lei'
   }
 
   export default {
+    components: {
+      DropDownMenu
+    },
     data () {
       return data
     },
     methods: {
-      showMenu (button) {
-        if (this.buttons[button]) {
-          this.buttons[button] = false
-          return
-        }
-        this.buttons[button] = true
-      },
-
       setCategory (index) {
         this.category = this.categories[index]
-        this.buttons.categoryButton = false
 
         io.socket.get('/subcategory/find/', {
           category: index
         }, (data) => {
           this.subcategories = data
         })
+
+        this.subcategory.title = 'Alege subcategoria'
       },
 
       setSubcategory (index) {
         this.subcategory = this.subcategories[index]
-        this.buttons.subcategoryButton = false
       },
 
-      setCurrency (currency) {
-        this.currency = currency
-        this.buttons.currencyButton = false
+      setCurrency (index) {
+        this.currency = this.currencies[index].title
       },
 
       postAd () {
+        if (!this.category.id && !this.subcategory.id) {
+          return
+        }
+
         io.socket.post('/ad/create', {
-          category: this.category.id,
           subcategory: this.subcategory.id,
           title: this.title,
           description: this.description,
@@ -204,6 +184,9 @@
     ready () {
       io.socket.get('/category/find', (data) => {
         this.categories = data
+      })
+      this.$on('close-drop-down', (id) => {
+        this.$broadcast('close-drop-down', id)
       })
     }
   }

@@ -46,7 +46,7 @@
   footer
     .copyright
       | © 2016 Anunț Orhei. Toate drepturile sunt rezervate
-    .social
+    nav.social
       a.fb(href="#")
       a.ok(href="#")
       a.skype(href="skype:testcall")
