@@ -51,8 +51,8 @@
 </style>
 
 <template lang="jade">
-  nav.mobile-modal
-    .close-modal
+  nav.mobile-modal(v-if="isVisible")
+    .close-modal(@click="closeModal")
     ul.menu
       li: a(href="#") Înregistrare
       li: a(href="#") Contul meu
@@ -60,4 +60,21 @@
 </template>
 
 <script>
+  export default {
+    data () {
+      return {
+        isVisible: false
+      }
+    },
+    methods: {
+      closeModal () {
+        this.isVisible = false
+      }
+    },
+    events: {
+      'open-modal' () {
+        this.isVisible = true
+      }
+    }
+  }
 </script>

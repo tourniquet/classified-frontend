@@ -42,7 +42,7 @@
   header
     modal
     .logo
-    button.navbar-toggle.collapsed(type="button")
+    button.navbar-toggle.collapsed(type="button", @click="openModal")
       span.icon-bar
       span.icon-bar
       span.icon-bar
@@ -54,6 +54,11 @@
   export default {
     components: {
       Modal
+    },
+    methods: {
+      openModal () {
+        this.$broadcast('open-modal')
+      }
     }
   }
 </script>

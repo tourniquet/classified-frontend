@@ -56,7 +56,7 @@
       border: 0px none;
       border-radius: 22px;
       color: #fff;
-      margin: 5px auto 0px;
+      margin: 20px auto 0px;
       width: 182px;
       height: 42px;
     }
@@ -68,7 +68,7 @@
 </style>
 
 <template lang="jade">
-  form.form
+  .form
     label.label(for="category") Categoria
       span.mandatory *
     drop-down-menu(:name="category.title", :elements="categories", @change="setCategory")

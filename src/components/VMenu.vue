@@ -1,8 +1,8 @@
 <style lang="scss">
-  ul.categories {
+  .categories {
     padding: 0 30px;
 
-    li.category-title {
+    .category-title {
       border: 2px solid #f6f6f6;
       border-radius: 8px;
       margin-bottom: 20px;
@@ -19,14 +19,20 @@
         padding-left: 30px;
       }
 
-      a.active-tab {
-        background: #f6f6f6;
+      .active-tab {
+        background: url('../assets/arrow_up.png') no-repeat #f6f6f6;
+        background-position: 92%;
       }
 
-      ul.subcategories {
+      .inactive-tab {
+        background: url('../assets/arrow_down.png') no-repeat;
+        background-position: 92%;
+      }
+
+      .subcategories {
         padding-left: 29px;
 
-        li.subcategory-title {
+        .subcategory-title {
           margin: 28px 0;
         }
       }
@@ -38,52 +44,17 @@
   menu
     ul.categories
       li.category-title(v-for="menuItem in menu")
-        a(href="#", v-text="menuItem.name", @click="setAccordion(menuItem.id)", :class="{ 'active-tab': openAccordion === menuItem.id }")
+        a(href="#", v-text="menuItem.title", @click="setAccordion(menuItem.id)", :class="[openAccordion === menuItem.id ? 'active-tab' : 'inactive-tab']")
         ul.subcategories(v-show="openAccordion === menuItem.id")
-          li.subcategory-title(v-for="child in menuItem.childs", v-text="child.name")
+          li.subcategory-title(v-for="subcategory in menuItem.subcategories", v-text="subcategory.title")
 </template>
 
 <script>
+  import io from '../sails'
+
   var data = {
     openAccordion: -1,
-    menu: [
-      {
-        id: 5,
-        name: 'Imobiliare',
-        childs: [
-          {
-            id: 1,
-            name: 'Apartamente'
-          },
-          {
-            id: 2,
-            name: 'Case si Vile'
-          },
-          {
-            id: 3,
-            name: 'Terenuri'
-          },
-          {
-            id: 4,
-            name: 'Imobil comercial'
-          },
-          {
-            id: 5,
-            name: 'Altele'
-          }
-        ]
-      },
-      {
-        id: 4,
-        name: 'Temporary',
-        childs: [
-          {
-            id: 3,
-            name: 'Hello'
-          }
-        ]
-      }
-    ]
+    menu: ''
   }
   export default {
     data () {
@@ -97,6 +68,11 @@
         }
         this.openAccordion = id
       }
+    },
+    ready () {
+      io.socket.get('/category/find/', (data) => {
+        this.menu = data
+      })
     }
   }
 </script>

@@ -13,6 +13,16 @@
     text-align: left;
   }
 
+  .active-tab {
+    background: url('../assets/arrow_up.png') no-repeat #f6f6f6;
+    background-position: 92%;
+  }
+
+  .inactive-tab {
+    background: url('../assets/arrow_down.png') no-repeat;
+    background-position: 92%;
+  }
+
   .ul-width {
     position: relative;
     width: 100%;
@@ -34,7 +44,7 @@
 </style>
 
 <template lang="jade">
-  button.button(type="button", @click.stop="open") {{ name }}
+  button.button(type="button", @click.stop="open", :class="[hidden ? 'inactive-tab' : 'active-tab']") {{ name }}
   .ul-width
     ul.show-ul-menu(:class="{'hide-ul-menu': hidden}")
       li(v-for="item in elements", @click="select($index)") {{ item.title }}

@@ -3,8 +3,8 @@
 
 <template lang="jade">
   v-search
-  //- v-menu
-  newad
+  v-menu
+  //- newad
 </template>
 
 <script>
