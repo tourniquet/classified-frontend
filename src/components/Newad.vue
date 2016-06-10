@@ -35,6 +35,27 @@
       resize: none;
     }
 
+    .images {
+      display: flex;
+      justify-content: space-between;
+
+      .label-for-images {
+        display: inline-block;
+        height: 94px;
+        width: 94px;
+        border: 2px solid #f6f6f6;
+        border-radius: 6px;
+        text-align: center;
+        line-height: 96px;
+        color: #e26636;
+        font-size: 32px;
+      }
+    }
+
+    .input-file {
+      display: none;
+    }
+
     .label-for-price {
       display: block;
     }
@@ -68,7 +89,7 @@
 </style>
 
 <template lang="jade">
-  .form
+  form.form(action="http://192.168.100.103:1337/ad/create", method="POST", enctype="multipart/form-data")
     label.label(for="category") Categoria
       span.mandatory *
     drop-down-menu(:name="category.title", :elements="categories", @change="setCategory")
@@ -76,17 +97,30 @@
     label.label(for="subcategory") Subcategoria
       span.mandatory *
     drop-down-menu(:name="subcategory.title", :elements="subcategories", @change="setSubcategory")
+    input(type="hidden", name="subcategory", value="{{subcategory.id}}")
 
     label.label(for="region") Regiunea
     drop-down-menu(:name="subcategory.title", :elements="subcategories", @change="setSubcategory")
+    input(type="hidden", name="region", value="{{region.id}}")
 
     label.label(for="title") Titlul anunţului
       span.mandatory *
-    input.input.title(type="text", name="title", v-model="title")
+    input.input.title(type="text", name="title", v-model="title", required)
 
     label.label(for="description") Descriere
       span.mandatory *
-    textarea.description(name="description", v-model="description")
+    textarea.description(name="description", v-model="description", required)
+
+    label.label Adaugă fotografii
+    .images
+      label.label-for-images(for="first-image") +
+      input#first-image.input-file(type="file")
+
+      label.label-for-images(for="second-image") +
+      input#second-image.input-file(type="file")
+
+      label.label-for-images(for="third-image") +
+      input#third-image.input-file(type="file")
 
     label.label.contacts Contacte
     input.input.phone(type="text", name="phone", placeholder="telefon", v-model="phone")
@@ -97,7 +131,7 @@
     .ul-width.currency
       drop-down-menu(:name="currency", :elements="currencies", @change="setCurrency")
 
-    button.post-ad(type="button", @click="postAd") Postează anunţ
+    button.post-ad(type="submit") Postează anunţ
 </template>
 
 <script>
