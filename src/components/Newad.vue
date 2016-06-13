@@ -113,14 +113,14 @@
 
     label.label Adaugă fotografii
     .images
-      label.label-for-images(for="first-image") +
-      input#first-image.input-file(type="file")
+      label.label-for-images(for="first-image", :style="{ 'background-image': 'url(' + firstImage + ')'}") +
+      input#first-image.input-file(type="file", accept="image/jpeg,image/png,image/gif", @change="setBackground('some-suca', $event)")
 
       label.label-for-images(for="second-image") +
-      input#second-image.input-file(type="file")
+      input#second-image.input-file(type="file", accept="image/jpeg,image/png,image/gif")
 
       label.label-for-images(for="third-image") +
-      input#third-image.input-file(type="file")
+      input#third-image.input-file(type="file", accept="image/jpeg,image/png,image/gif")
 
     label.label.contacts Contacte
     input.input.phone(type="text", name="phone", placeholder="telefon", v-model="phone")
@@ -166,7 +166,8 @@
         title: '€'
       }
     ],
-    currency: 'lei'
+    currency: 'lei',
+    firstImage: ''
   }
 
   export default {
@@ -195,6 +196,20 @@
 
       setCurrency (index) {
         this.currency = this.currencies[index].title
+      },
+
+      setBackground (id, event) {
+        var fileReader = new window.FileReader()
+
+        fileReader.onload = () => {
+          this.firstImage = fileReader.result
+          console.log(fileReader.result.length)
+          var output = document.getElementById('some-suca')
+          output.style.background = `url(${fileReader.result})`
+          output.style['background-size'] = 'cover'
+        }
+
+        fileReader.readAsDataURL(event.target.files[0])
       },
 
       postAd () {
