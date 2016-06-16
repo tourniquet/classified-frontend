@@ -40,6 +40,7 @@
       justify-content: space-between;
 
       .label-for-images {
+        background-size: cover;
         display: inline-block;
         height: 94px;
         width: 94px;
@@ -49,6 +50,20 @@
         line-height: 96px;
         color: #e26636;
         font-size: 32px;
+      }
+
+      .hidden-label {
+        visibility: hidden;
+      }
+
+      .remove-image {
+        height: 20px;
+        width: 20px;
+        margin: -10px 0 -22px 0;
+        position: relative;
+        float: right;
+        margin-left: -12px;
+        margin-top: -9px;
       }
     }
 
@@ -113,14 +128,23 @@
 
     label.label Adaugă fotografii
     .images
-      label.label-for-images(for="first-image", :style="{ 'background-image': 'url(' + firstImage + ')'}") +
-      input#first-image.input-file(type="file", accept="image/jpeg,image/png,image/gif", @change="setBackground('some-suca', $event)")
+      .first-image-block
+        img.remove-image(src="../assets/remove.png", v-if="firstImage", @click="removeImage('firstImage')")
+        label.label-for-images(for="first-image", :style="{'background-image': `url(${firstImage})`}")
+          span(v-if="!firstImage") +
+        input#first-image.input-file(type="file", accept="image/jpeg,image/png,image/gif", @change="setBackground('firstImage', $event)")
 
-      label.label-for-images(for="second-image") +
-      input#second-image.input-file(type="file", accept="image/jpeg,image/png,image/gif")
+      .second-image-block
+        img.remove-image(src="../assets/remove.png", v-if="secondImage", @click="removeImage('secondImage')")
+        label.label-for-images(for="second-image", :class="{'hidden-label': !firstImage}", :style="{'background-image': `url(${secondImage})`}")
+          span(v-if="!secondImage") +
+        input#second-image.input-file(type="file", accept="image/jpeg,image/png,image/gif", @change="setBackground('secondImage', $event)")
 
-      label.label-for-images(for="third-image") +
-      input#third-image.input-file(type="file", accept="image/jpeg,image/png,image/gif")
+      .third-image-block
+        img.remove-image(src="../assets/remove.png", v-if="thirdImage", @click="removeImage('thirdImage')")
+        label.label-for-images(for="third-image", :class="{'hidden-label': !secondImage}", :style="{'background-image': `url(${thirdImage})`}")
+          span(v-if="!thirdImage") +
+        input#third-image.input-file(type="file", accept="image/jpeg,image/png,image/gif", @change="setBackground('thirdImage', $event)")
 
     label.label.contacts Contacte
     input.input.phone(type="text", name="phone", placeholder="telefon", v-model="phone")
@@ -167,7 +191,9 @@
       }
     ],
     currency: 'lei',
-    firstImage: ''
+    firstImage: '',
+    secondImage: '',
+    thirdImage: ''
   }
 
   export default {
@@ -198,18 +224,19 @@
         this.currency = this.currencies[index].title
       },
 
-      setBackground (id, event) {
+      setBackground (image, event) {
         var fileReader = new window.FileReader()
 
         fileReader.onload = () => {
-          this.firstImage = fileReader.result
-          console.log(fileReader.result.length)
-          var output = document.getElementById('some-suca')
-          output.style.background = `url(${fileReader.result})`
-          output.style['background-size'] = 'cover'
+          this[image] = fileReader.result
         }
 
         fileReader.readAsDataURL(event.target.files[0])
+      },
+
+      removeImage (image) {
+        console.log('hi!')
+        this[image] = ''
       },
 
       postAd () {
