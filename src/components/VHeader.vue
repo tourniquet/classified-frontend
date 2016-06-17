@@ -40,7 +40,10 @@
 
 <template lang="jade">
   header
-    modal
+    //- modal
+    //- registration
+    login
+
     .logo
     button.navbar-toggle.collapsed(type="button", @click="openModal")
       span.icon-bar
@@ -50,10 +53,14 @@
 
 <script type="text/javascript">
   import Modal from './Modal'
+  import Registration from './Registration'
+  import Login from './Login'
 
   export default {
     components: {
-      Modal
+      Modal,
+      Registration,
+      Login
     },
     methods: {
       openModal () {

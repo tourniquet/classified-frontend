@@ -51,7 +51,7 @@
 </style>
 
 <template lang="jade">
-  nav.mobile-modal(v-if="isVisible")
+  .mobile-modal(v-if="isVisible")
     .close-modal(@click="closeModal")
     ul.menu
       li: a(href="#") Înregistrare
