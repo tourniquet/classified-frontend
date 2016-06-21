@@ -15,18 +15,19 @@
       height: 24px;
       width: 24px;
       float: right;
-      margin-right: 25px;
+      margin-right: 29px;
       margin-top: 34px;
     }
 
     .header-text {
       text-align: center;
-      margin-top: 132px;
-      font-size: 32px;
+      margin-top: 138px;
+      font-size: 26px;
+      letter-spacing: 0.06em;
     }
 
     .form {
-      margin-top: 45px;
+      margin: 45px 0 48px 0;
 
       input {
         display: block;
@@ -58,7 +59,13 @@
 
     span {
       display: block;
+      font-size: 13px;
+      letter-spacing: 0.1em;
       text-align: center;
+    }
+
+    .forgotten-password {
+      margin-top: 27px;
     }
   }
 </style>
@@ -71,9 +78,9 @@
       input(type="email", placeholder="Email")
       input(type="password", placeholder="Parolă")
       input.submit(type="submit", value="Intră")
-    span Nu ai cont?
+    span.no-account Nu ai cont?
       a(href="#") &nbsp; Înregistrează-te
-    span Ai uitat parola?
+    span.forgotten-password Ai uitat parola?
 </template>
 
 <script>

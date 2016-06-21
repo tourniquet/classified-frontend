@@ -15,14 +15,15 @@
       height: 24px;
       width: 24px;
       float: right;
-      margin-right: 25px;
+      margin-right: 29px;
       margin-top: 34px;
     }
 
     .header-text {
       text-align: center;
-      margin-top: 142px;
-      font-size: 32px;
+      margin-top: 146px;
+      font-size: 28px;
+      letter-spacing: 0.03em;
     }
 
     .form {
@@ -61,7 +62,7 @@
 <template lang="jade">
   .registration(v-if="isVisible")
     .close-modal(@click="closeModal")
-    h1.header-text Înregistrare
+    h1.header-text ÎNREGISTRARE
 
     form.form
       input.email(type="email", placeholder="Email")
@@ -74,7 +75,7 @@
   export default {
     data () {
       return {
-        isVisible: false
+        isVisible: true
       }
     },
     methods: {

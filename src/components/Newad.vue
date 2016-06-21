@@ -104,7 +104,7 @@
 </style>
 
 <template lang="jade">
-  form.form(action="http://192.168.100.103:1337/ad/create", method="POST", enctype="multipart/form-data")
+  .form
     label.label(for="category") Categoria
       span.mandatory *
     drop-down-menu(:name="category.title", :elements="categories", @change="setCategory")
@@ -128,23 +128,11 @@
 
     label.label Adaugă fotografii
     .images
-      .first-image-block
-        img.remove-image(src="../assets/remove.png", v-if="firstImage", @click="removeImage('firstImage')")
-        label.label-for-images(for="first-image", :style="{'background-image': `url(${firstImage})`}")
-          span(v-if="!firstImage") +
-        input#first-image.input-file(type="file", accept="image/jpeg,image/png,image/gif", @change="setBackground('firstImage', $event)")
-
-      .second-image-block
-        img.remove-image(src="../assets/remove.png", v-if="secondImage", @click="removeImage('secondImage')")
-        label.label-for-images(for="second-image", :class="{'hidden-label': !firstImage}", :style="{'background-image': `url(${secondImage})`}")
-          span(v-if="!secondImage") +
-        input#second-image.input-file(type="file", accept="image/jpeg,image/png,image/gif", @change="setBackground('secondImage', $event)")
-
-      .third-image-block
-        img.remove-image(src="../assets/remove.png", v-if="thirdImage", @click="removeImage('thirdImage')")
-        label.label-for-images(for="third-image", :class="{'hidden-label': !secondImage}", :style="{'background-image': `url(${thirdImage})`}")
-          span(v-if="!thirdImage") +
-        input#third-image.input-file(type="file", accept="image/jpeg,image/png,image/gif", @change="setBackground('thirdImage', $event)")
+      .image-block(v-for="image in images")
+        img.remove-image(src="../assets/remove.png", v-if="image.url != ''", @click="removeImage($index)")
+        label.label-for-images(:style="{'background-image': `url(${image.url})`}")
+          span(v-if="image.url == ''") +
+          input.input-file(v-if="images.length <= 3", type="file", accept="image/jpeg,image/png,image/gif", @change="setBackground(image, $event)")
 
     label.label.contacts Contacte
     input.input.phone(type="text", name="phone", placeholder="telefon", v-model="phone")
@@ -193,7 +181,12 @@
     currency: 'lei',
     firstImage: '',
     secondImage: '',
-    thirdImage: ''
+    thirdImage: '',
+    images: [
+      {
+        url: ''
+      }
+    ]
   }
 
   export default {
@@ -215,30 +208,33 @@
 
         this.subcategory.title = 'Alege subcategoria'
       },
-
       setSubcategory (index) {
         this.subcategory = this.subcategories[index]
       },
-
       setCurrency (index) {
         this.currency = this.currencies[index].title
       },
-
       setBackground (image, event) {
         var fileReader = new window.FileReader()
 
         fileReader.onload = () => {
-          this[image] = fileReader.result
+          if (this.images.length === 3) {
+            this.images.splice(2, 1, { url: fileReader.result })
+          } else {
+            this.images.unshift({ url: fileReader.result })
+          }
         }
 
         fileReader.readAsDataURL(event.target.files[0])
       },
-
-      removeImage (image) {
-        console.log('hi!')
-        this[image] = ''
+      removeImage (index) {
+        if (this.images.length === 3 && this.images[this.images.length - 1].url !== '') {
+          this.images.splice(index, 1)
+          this.images.push({ url: '' })
+        } else {
+          this.images.splice(index, 1)
+        }
       },
-
       postAd () {
         if (!this.category.id && !this.subcategory.id) {
           return

@@ -42,7 +42,7 @@
   header
     //- modal
     //- registration
-    login
+    //- login
 
     .logo
     button.navbar-toggle.collapsed(type="button", @click="openModal")
