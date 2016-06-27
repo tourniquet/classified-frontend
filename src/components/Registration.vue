@@ -64,24 +64,40 @@
     .close-modal(@click="closeModal")
     h1.header-text ÎNREGISTRARE
 
-    form.form
-      input.email(type="email", placeholder="Email")
-      input.password(type="password", placeholder="Parolă")
-      input.password-confirmation(type="password", placeholder="Confirmă parola")
-      input.submit(type="submit", value="Crează cont")
+    .form
+      input.email(type="email", v-model="email", placeholder="Email")
+      input.password(type="password", v-model="password", placeholder="Parolă")
+      input.password-confirmation(type="password", v-model="passwordConfrimation", placeholder="Confirmă parola")
+      input.submit(type="button", @click="registration", value="Crează cont")
 </template>
 
 <script>
+  import io from '../sails'
+
+  var data = {
+    isVisible: true,
+    email: '',
+    password: '',
+    passwordConfrimation: ''
+  }
+
   export default {
     data () {
-      return {
-        isVisible: true
-      }
+      return data
     },
     methods: {
       closeModal () {
-        console.log('hi')
         this.isVisible = false
+      },
+      registration () {
+        if (this.email && (this.password === this.passwordConfrimation)) {
+          io.socket.post('http://localhost:1337/user/create', {
+            email: this.email,
+            password: this.password
+          }, (data) => {
+            console.log(data)
+          })
+        }
       }
     }
   }

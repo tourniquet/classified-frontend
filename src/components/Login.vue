@@ -71,17 +71,48 @@
 </style>
 
 <template lang="jade">
-  .login
+  .login(v-if="isVisible")
     .close-modal(@click="closeModal")
     h1.header-text Logare
-    form.form
-      input(type="email", placeholder="Email")
-      input(type="password", placeholder="Parolă")
-      input.submit(type="submit", value="Intră")
+    .form
+      input(type="email", v-model="email", placeholder="Email")
+      input(type="password", v-model="password", placeholder="Parolă")
+      input.submit(type="button", @click="login", value="Intră")
     span.no-account Nu ai cont?
       a(href="#") &nbsp; Înregistrează-te
     span.forgotten-password Ai uitat parola?
 </template>
 
 <script>
+  import io from '../sails'
+
+  var data = {
+    // if modal window is visible
+    isVisible: false,
+    email: '',
+    password: ''
+  }
+
+  export default {
+    data () {
+      return data
+    },
+    methods: {
+      closeModal () {
+        this.isVisible = false
+      },
+      login () {
+        if (!this.email && !this.password) {
+          return
+        }
+
+        io.socket.post('http://localhost:1337/session/create', {
+          email: this.email,
+          password: this.password
+        }, (data) => {
+          console.log(data)
+        })
+      }
+    }
+  }
 </script>

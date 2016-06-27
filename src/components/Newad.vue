@@ -115,7 +115,7 @@
     input(type="hidden", name="subcategory", value="{{subcategory.id}}")
 
     label.label(for="region") Regiunea
-    drop-down-menu(:name="subcategory.title", :elements="subcategories", @change="setSubcategory")
+    drop-down-menu(:name="region.title", :elements="regions", @change="setRegion")
     input(type="hidden", name="region", value="{{region.id}}")
 
     label.label(for="title") Titlul anunţului
@@ -143,7 +143,7 @@
     .ul-width.currency
       drop-down-menu(:name="currency", :elements="currencies", @change="setCurrency")
 
-    button.post-ad(type="submit") Postează anunţ
+    button.post-ad(@click="postAd") Postează anunţ
 </template>
 
 <script>
@@ -154,12 +154,17 @@
     expandButton: false,
     categories: '',
     subcategories: '',
+    regions: '',
     category: {
       title: 'Alege categoria',
       id: ''
     },
     subcategory: {
       title: 'Alege subcategoria',
+      id: ''
+    },
+    region: {
+      title: 'Alege regiunea',
       id: ''
     },
     title: '',
@@ -211,6 +216,9 @@
       setSubcategory (index) {
         this.subcategory = this.subcategories[index]
       },
+      setRegion (index) {
+        this.region = this.regions[index]
+      },
       setCurrency (index) {
         this.currency = this.currencies[index].title
       },
@@ -243,6 +251,7 @@
         io.socket.post('/ad/create', {
           subcategory: this.subcategory.id,
           title: this.title,
+          region: this.region,
           description: this.description,
           phone: this.phone,
           contactName: this.contactName,
@@ -256,6 +265,9 @@
     ready () {
       io.socket.get('/category/find', (data) => {
         this.categories = data
+      })
+      io.socket.get('/region/find', (data) => {
+        this.regions = data
       })
       this.$on('close-drop-down', (id) => {
         this.$broadcast('close-drop-down', id)

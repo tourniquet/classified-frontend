@@ -41,7 +41,7 @@
 <template lang="jade">
   header
     //- modal
-    //- registration
+    registration
     //- login
 
     .logo
