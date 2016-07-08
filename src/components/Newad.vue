@@ -184,9 +184,9 @@
       }
     ],
     currency: 'lei',
-    firstImage: '',
-    secondImage: '',
-    thirdImage: '',
+    // firstImage: '',
+    // secondImage: '',
+    // thirdImage: '',
     images: [
       {
         url: ''
@@ -253,13 +253,12 @@
           title: this.title,
           region: this.region,
           description: this.description,
+          images: this.images,
           phone: this.phone,
           contactName: this.contactName,
           price: this.price,
           currency: this.currency
-        }, (data, res) => {
-          res.statusCode
-        })
+        }, console.log.bind(console))
       }
     },
     ready () {
