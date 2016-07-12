@@ -104,7 +104,7 @@
 </style>
 
 <template lang="jade">
-  .form
+  form.form(action="192.168.1.101:1337/ad/create", method="POST", enctype="multipart/form-data")
     label.label(for="category") Categoria
       span.mandatory *
     drop-down-menu(:name="category.title", :elements="categories", @change="setCategory")
@@ -143,7 +143,8 @@
     .ul-width.currency
       drop-down-menu(:name="currency", :elements="currencies", @change="setCurrency")
 
-    button.post-ad(@click="postAd") Postează anunţ
+    //- @click="postAd"
+    button.post-ad(type="submit") Postează anunţ
 </template>
 
 <script>
