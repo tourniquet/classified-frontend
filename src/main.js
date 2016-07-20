@@ -1,12 +1,12 @@
-import Vue from 'vue'
 import App from './App'
+import router from './router'
 
 /* eslint-disable no-new */
-var vm = new Vue({
-  el: 'body',
-  components: { App }
-})
 
-document.body.addEventListener('click', () => {
-  vm.$broadcast('close-drop-down')
-})
+router.start({
+  components: { App }
+}, 'body')
+
+// document.body.addEventListener('click', () => {
+//   vm.$broadcast('close-drop-down')
+// })

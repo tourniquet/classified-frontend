@@ -3,8 +3,7 @@
 
 <template lang="jade">
   v-search
-  //- v-menu
-  newad
+  router-view
 </template>
 
 <script>

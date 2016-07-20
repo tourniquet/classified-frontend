@@ -1,106 +1,92 @@
-<style lang="scss">
-  .form {
-    padding: 0 30px;
+<style lang="sass">
+  .form
+    padding: 0 30px
 
-    .label {
-      display: inline-block;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      margin-bottom: 18px;
-    }
+    .label
+      display: inline-block
+      font-size: 14px
+      font-weight: 700
+      letter-spacing: 0.1em
+      margin-bottom: 18px
 
-    .input {
-      display: block;
-      background: #fff;
-      border: 2px solid #f6f6f6;
-      border-radius: 8px;
-      height: 58px;
-      width: 100%;
-      padding-left: 15px;
-      margin-bottom: 18px;
-      font-size: 14px;
-      letter-spacing: 0.08em;
-      text-align: left;
-      box-sizing: border-box;
-    }
+    .input
+      display: block
+      background: #fff
+      border: 2px solid #f6f6f6
+      border-radius: 8px
+      height: 58px
+      width: 100%
+      padding-left: 15px
+      margin-bottom: 18px
+      font-size: 14px
+      letter-spacing: 0.08em
+      text-align: left
+      box-sizing: border-box
 
-    .description {
-      display: block;
-      border: 2px solid #f6f6f6;
-      border-radius: 8px;
-      height: 190px;
-      width: 100%;
-      margin-bottom: 26px;
-      resize: none;
-    }
+    .description
+      display: block
+      border: 2px solid #f6f6f6
+      border-radius: 8px
+      height: 190px
+      width: 100%
+      margin-bottom: 26px
+      resize: none
 
-    .images {
-      display: flex;
-      justify-content: space-between;
+    .images
+      display: flex
+      justify-content: space-between
 
-      .label-for-images {
-        background-size: cover;
-        display: inline-block;
-        height: 94px;
-        width: 94px;
-        border: 2px solid #f6f6f6;
-        border-radius: 6px;
-        text-align: center;
-        line-height: 96px;
-        color: #e26636;
-        font-size: 32px;
-      }
+      .label-for-images
+        background-size: cover
+        display: inline-block
+        height: 94px
+        width: 94px
+        border: 2px solid #f6f6f6
+        border-radius: 6px
+        text-align: center
+        line-height: 96px
+        color: #e26636
+        font-size: 32px
 
-      .hidden-label {
-        visibility: hidden;
-      }
+      .hidden-label
+        visibility: hidden
 
-      .remove-image {
-        height: 20px;
-        width: 20px;
-        margin: -10px 0 -22px 0;
-        position: relative;
-        float: right;
-        margin-left: -12px;
-        margin-top: -9px;
-      }
-    }
+      .remove-image
+        height: 20px
+        width: 20px
+        margin: -10px 0 -22px 0
+        position: relative
+        float: right
+        margin-left: -12px
+        margin-top: -9px
 
-    .input-file {
-      display: none;
-    }
+    .input-file
+      display: none
 
-    .label-for-price {
-      display: block;
-    }
+    .label-for-price
+      display: block
 
-    .price {
-      display: inline-block;
-      width: 64%;
-    }
+    .price
+      display: inline-block
+      width: 64%
 
-    .currency {
-      display: inline-block;
-      float: right;
-      width: 33%;
-    }
+    .currency
+      display: inline-block
+      float: right
+      width: 33%
 
-    .post-ad {
-      display: table;
-      background: transparent linear-gradient(#e7774a, #df5b27) repeat scroll 0% 0%;
-      border: 0px none;
-      border-radius: 22px;
-      color: #fff;
-      margin: 20px auto 0px;
-      width: 182px;
-      height: 42px;
-    }
+    .post-ad
+      display: table
+      background: transparent linear-gradient(#e7774a, #df5b27) repeat scroll 0% 0%
+      border: 0px none
+      border-radius: 22px
+      color: #fff
+      margin: 20px auto 0px
+      width: 182px
+      height: 42px
 
-    .mandatory {
-      color: red;
-    }
-  }
+    .mandatory
+      color: red
 </style>
 
 <template lang="jade">

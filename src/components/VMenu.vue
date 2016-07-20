@@ -1,43 +1,36 @@
-<style lang="scss">
-  .categories {
-    padding: 0 30px;
+<style lang="sass">
+  .categories
+    padding: 0 30px
 
-    .category-title {
-      border: 2px solid #f6f6f6;
-      border-radius: 8px;
-      margin-bottom: 20px;
+    .category-title
+      border: 2px solid #f6f6f6
+      border-radius: 8px
+      margin-bottom: 20px
 
-      a:link, a:visited, a:active, a:hover {
-        font-size: 15px;
-        font-weight: 700;
-        letter-spacing: .07em;
-        color: black;
-        text-decoration: none;
-        height: 58px;
-        line-height: 58px;
-        display: block;
-        padding-left: 30px;
-      }
+      a:link, a:visited, a:active, a:hover
+        font-size: 15px
+        font-weight: 700
+        letter-spacing: .07em
+        color: black
+        text-decoration: none
+        height: 58px
+        line-height: 58px
+        display: block
+        padding-left: 30px
 
-      .active-tab {
-        background: url('../assets/arrow_up.png') no-repeat #f6f6f6;
-        background-position: 92%;
-      }
+      .active-tab
+        background: url('../assets/arrow_up.png') no-repeat #f6f6f6
+        background-position: 92%
 
-      .inactive-tab {
-        background: url('../assets/arrow_down.png') no-repeat;
-        background-position: 92%;
-      }
+      .inactive-tab
+        background: url('../assets/arrow_down.png') no-repeat
+        background-position: 92%
 
-      .subcategories {
-        padding-left: 29px;
+      .subcategories
+        padding-left: 29px
 
-        .subcategory-title {
-          margin: 28px 0;
-        }
-      }
-    }
-  }
+        .subcategory-title
+          margin: 28px 0
 </style>
 
 <template lang="jade">
