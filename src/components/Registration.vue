@@ -85,7 +85,7 @@
       },
       registration () {
         if (this.email && (this.password === this.passwordConfrimation)) {
-          io.socket.post('http://192.168.1.101:1337/user/create', {
+          io.socket.post('/user/create', {
             email: this.email,
             password: this.password
           }, (err, data) => {

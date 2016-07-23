@@ -41,10 +41,24 @@
     .copyright
       | © 2016 Anunț Orhei. Toate drepturile sunt rezervate
     nav.social
-      a.fb(href="#")
-      a.ok(href="#")
-      a.skype(href="skype:testcall")
+      a.fb(href="{{ fb }}")
+      a.ok(href="{{ ok }}")
+      a.skype(href="skype:{{ skype }}")
 </template>
 
 <script type="text/javascript">
+  import settings from '../settings'
+
+  let data = {
+    fb: settings.fb,
+    // ok.ru - russian social networking service
+    ok: settings.ok,
+    skype: settings.skype
+  }
+
+  export default {
+    data () {
+      return data
+    }
+  }
 </script>

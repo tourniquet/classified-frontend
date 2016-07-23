@@ -81,7 +81,7 @@
 
   var data = {
     // if modal window is visible
-    isVisible: true,
+    isVisible: false,
     email: '',
     password: ''
   }
@@ -99,7 +99,7 @@
           return
         }
 
-        io.socket.post('http://192.168.1.101:1337/session/create', {
+        io.socket.post('/session/create', {
           email: this.email,
           password: this.password
         }, (data) => {
