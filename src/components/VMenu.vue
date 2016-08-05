@@ -31,6 +31,12 @@
 
         .subcategory-title
           margin: 28px 0
+
+          a:link, a:visited, a:active, a:hover
+            height: 16px
+            font-weight: 500
+            line-height: 16px
+            padding: 0
 </style>
 
 <template lang="jade">
@@ -39,7 +45,9 @@
       li.category-title(v-for="menuItem in menu")
         a(href="#", v-text="menuItem.title", @click="setAccordion(menuItem.id)", :class="[openAccordion === menuItem.id ? 'active-tab' : 'inactive-tab']")
         ul.subcategories(v-show="openAccordion === menuItem.id")
-          li.subcategory-title(v-for="subcategory in menuItem.subcategories", v-text="subcategory.title")
+          li.subcategory-title(v-for="subcategory in menuItem.subcategories")
+            //- , v-text="subcategory.title"
+            a(href="/{{menuItem.title}}/{{subcategory.title}}") {{ subcategory.title }} {{ subcategory.category.title }}
 </template>
 
 <script>

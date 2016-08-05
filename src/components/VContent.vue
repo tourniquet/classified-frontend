@@ -1,10 +1,14 @@
-<style media="screen" lang="scss">
+<style media="screen" lang="sass">
+  body
+    display: flex
+    flex-direction: column
 </style>
 
 <template lang="jade">
   v-search
-  //- router-view
-  adpage
+  router-view
+  //- adpage
+  //- newad
 </template>
 
 <script>

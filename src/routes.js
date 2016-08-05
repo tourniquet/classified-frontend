@@ -13,7 +13,7 @@ export default {
     name: 'newad',
     component: Newad
   },
-  '/category/:id': {
+  '/category/:category': {
     name: 'category',
     component: Category
   },
@@ -21,7 +21,7 @@ export default {
     name: 'subcategory',
     component: Subcategory
   },
-  '/ad/:uri': {
+  '/:uri': {
     name: 'adpage',
     component: Adpage
   }

@@ -77,7 +77,7 @@
 
     .post-ad
       display: table
-      background: transparent linear-gradient(#e7774a, #df5b27) repeat scroll 0% 0%
+      background: #df6c40
       border: 0px none
       border-radius: 22px
       color: #fff
@@ -87,49 +87,103 @@
 
     .mandatory
       color: red
+
+  @media (min-width: 1200px)
+    .form
+      width: 1200px
+      margin: 0 auto
+
+      .left-side
+        float: left
+        width: 30%
+
+      .right-side
+        float: right
+        width: 67%
+
+      .input
+        width: 70%
+
+      .description
+        width: 70%
+
+      .images
+        width: 73%
+        margin-bottom: 10px
+
+        .label-for-images
+          height: 167px
+          width: 167px
+          line-height: 164px
+
+      .contacts-block
+        width: 70%
+        .phone, .contact-name
+          display: inline-block
+          width: 48%
+
+        .contact-name
+          float: right
+
+      .price-block
+        width: 38%
+        .price
+          width: 145px
+
+        .currency
+          width: 143px
+          margin: 0
+
+      .post-ad
+        display: block
+        float: left
 </style>
 
 <template lang="jade">
   .form
-    label.label(for="category") Categoria
-      span.mandatory *
-    drop-down-menu(:name="category.title", :elements="categories", @change="setCategory")
+    .left-side
+      label.label(for="category") Categoria
+        span.mandatory *
+      drop-down-menu(:name="category.title", :elements="categories", @change="setCategory")
 
-    label.label(for="subcategory") Subcategoria
-      span.mandatory *
-    drop-down-menu(:name="subcategory.title", :elements="subcategories", @change="setSubcategory")
-    input(type="hidden", name="subcategory", value="{{subcategory.id}}")
+      label.label(for="subcategory") Subcategoria
+        span.mandatory *
+      drop-down-menu(:name="subcategory.title", :elements="subcategories", @change="setSubcategory")
+      input(type="hidden", name="subcategory", value="{{subcategory.id}}")
 
-    label.label(for="region") Regiunea
-    drop-down-menu(:name="region.title", :elements="regions", @change="setRegion")
-    input(type="hidden", name="region", value="{{region.id}}")
+      label.label(for="region") Regiunea
+      drop-down-menu(:name="region.title", :elements="regions", @change="setRegion")
+      input(type="hidden", name="region", value="{{region.id}}")
 
-    label.label(for="title") Titlul anunţului
-      span.mandatory *
-    input.input.title(type="text", name="title", v-model="title", required)
+    .right-side
+      label.label(for="title") Titlul anunţului
+        span.mandatory *
+      input.input.title(type="text", name="title", v-model="title", required)
 
-    label.label(for="description") Descriere
-      span.mandatory *
-    textarea.description(name="description", v-model="description", required)
+      label.label(for="description") Descriere
+        span.mandatory *
+      textarea.description(name="description", v-model="description", required)
 
-    label.label Adaugă fotografii
-    .images
-      .image-block(v-for="image in images")
-        img.remove-image(src="../assets/remove.png", v-if="image.url != ''", @click="removeImage($index)")
-        label.label-for-images(:style="{'background-image': `url(${image.url})`}")
-          span(v-if="image.url == ''") +
-          input.input-file(v-if="images.length <= 3", type="file", accept="image/jpeg,image/png,image/gif", @change="setBackground(image, $event)")
+      label.label Adaugă fotografii
+      .images
+        .image-block(v-for="image in images")
+          img.remove-image(src="../assets/remove.png", v-if="image.url != ''", @click="removeImage($index)")
+          label.label-for-images(:style="{'background-image': `url(${image.url})`}")
+            span(v-if="image.url == ''") +
+            input.input-file(v-if="images.length <= 3", type="file", accept="image/jpeg,image/png,image/gif", @change="setBackground(image, $event)")
 
-    label.label.contacts Contacte
-    input.input.phone(type="text", name="phone", placeholder="telefon", v-model="phone")
-    input.input.contact-name(type="text", name="contact-name", placeholder="nume de contact", v-model="contactName")
+      label.label.contacts Contacte
+      .contacts-block
+        input.input.phone(type="text", name="phone", placeholder="telefon", v-model="phone")
+        input.input.contact-name(type="text", name="contact-name", placeholder="nume de contact", v-model="contactName")
 
-    label.label.label-for-price(for="price") Preţ
-    input.input.price(type="text", name="price", v-model="price")
-    .ul-width.currency
-      drop-down-menu(:name="currency", :elements="currencies", @change="setCurrency")
+      label.label.label-for-price(for="price") Preţ
+      .price-block
+        input.input.price(type="text", name="price", v-model="price")
+        .ul-width.currency
+          drop-down-menu(:name="currency", :elements="currencies", @change="setCurrency")
 
-    button.post-ad(type="button", @click="postAd") Postează anunţ
+      button.post-ad(type="button", @click="postAd") Postează anunţ
 </template>
 
 <script>
@@ -189,7 +243,7 @@
         this.category = this.categories[index]
 
         io.socket.get('/subcategory/find/', {
-          category: index
+          category: this.category.id
         }, (data) => {
           this.subcategories = data
         })
@@ -241,7 +295,9 @@
           contactName: this.contactName,
           price: this.price,
           currency: this.currency
-        }, console.log.bind(console))
+        }, (data) => {
+          window.location.replace(`/${data.url}`)
+        })
       }
     },
     ready () {
