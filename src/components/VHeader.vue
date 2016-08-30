@@ -32,6 +32,36 @@
       height: 2px
       border-radius: 1px
       margin-bottom: 5px
+
+  @media (max-width: 1199px)
+    .desktop-screen
+      display: none
+
+  @media (min-width: 1200px)
+    header
+      display: flex
+      flex-direction: row
+      justify-content: space-around
+
+      .navbar-toggle
+        display: none
+
+      .desktop-screen
+        color: white
+        font-size: smaller
+        li
+          display: inline-block
+          padding: 16px
+
+          .post-ad-button
+            display: table
+            background: transparent linear-gradient(#e7774a, #df5b27) repeat scroll 0% 0%
+            border: 0px none
+            border-radius: 22px
+            color: #fff
+            margin: 5px auto 0px
+            height: 42px
+            width: 182px
 </style>
 
 <template lang="jade">
@@ -40,11 +70,16 @@
     registration
     login
 
-    .logo
+    a.logo(href="/")
     button.navbar-toggle.collapsed(type="button", @click="openModal")
       span.icon-bar
       span.icon-bar
       span.icon-bar
+
+    ul.desktop-screen
+      li(style="display: none") Înregistrare
+      li(style="display: none") Contul meu
+      li: input.post-ad-button(type="button", onclick="location.href='/newad'", value="Postează anunț")
 </template>
 
 <script type="text/javascript">

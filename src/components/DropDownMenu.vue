@@ -78,7 +78,8 @@
 </template>
 
 <script>
-  var id = 0
+  let id = 0
+
   export default {
     props: ['name', 'elements'],
     data () {
@@ -89,18 +90,16 @@
     },
     methods: {
       open () {
-        console.log(this.id)
         this.$dispatch('close-drop-down', this.id)
         this.hidden = !this.hidden
       },
       select (index) {
-        console.log(index)
         this.$dispatch('change', index)
+        this.hidden = true
       }
     },
     ready () {
       this.$on('close-drop-down', (val) => {
-        console.log(val)
         if (val !== this.id) {
           this.hidden = true
         }

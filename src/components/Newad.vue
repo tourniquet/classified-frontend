@@ -75,7 +75,7 @@
       float: right
       width: 33%
 
-    .post-ad
+    .post-button
       display: table
       background: #df6c40
       border: 0px none
@@ -100,6 +100,7 @@
       .right-side
         float: right
         width: 67%
+        margin-bottom: 135px
 
       .input
         width: 70%
@@ -134,7 +135,7 @@
           width: 143px
           margin: 0
 
-      .post-ad
+      .post-button
         display: block
         float: left
 </style>
@@ -183,7 +184,7 @@
         .ul-width.currency
           drop-down-menu(:name="currency", :elements="currencies", @change="setCurrency")
 
-      button.post-ad(type="button", @click="postAd") Postează anunţ
+      button.post-button(type="button", @click="postAd") Postează anunţ
 </template>
 
 <script>

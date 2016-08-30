@@ -8,5 +8,5 @@ router.start({
 }, 'body')
 
 // document.body.addEventListener('click', () => {
-//   vm.$broadcast('close-drop-down')
+  // router.$broadcast('close-drop-down')
 // })

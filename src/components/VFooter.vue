@@ -35,6 +35,18 @@
       a.skype
         @extend a.fb
         background-image: url('../assets/skype.png')
+
+  @media (min-width: 1200px)
+    footer
+      display: flex
+      flex-direction: row
+      justify-content: space-around
+      height: 130px
+      align-items: center
+      margin-top: 0
+      padding-top: 0
+      .copyright
+        margin-bottom: 0
 </style>
 
 <template lang="jade">

@@ -37,6 +37,40 @@
             font-weight: 500
             line-height: 16px
             padding: 0
+
+  @media (max-width: 1199px)
+    .last-ads
+      display: none
+
+  @media (min-width: 1200px)
+    .last-ads
+      margin: 0 auto
+      margin-top: 51px
+      margin-bottom: 92px
+      width: 1268px
+      font-size: 13px
+      .last-ads-item
+        height: 50px
+        line-height: 50px
+        padding-left: 32px
+        border-top: 2px solid #f6f6f6
+        span
+          display: inline-block
+        .star
+          width: 32px
+        .image
+          width: 30px
+        .ad-title
+          width: 852px
+          a:link, a:visited, a:active
+            text-decoration: none
+            color: black
+        .ad-category
+          color: #e26433
+          width: 125px
+        .ad-date
+          width: 135px
+          text-align: right
 </style>
 
 <template lang="jade">
@@ -48,6 +82,14 @@
           li.subcategory-title(v-for="subcategory in menuItem.subcategories")
             //- , v-text="subcategory.title"
             a(href="/{{menuItem.title}}/{{subcategory.title}}") {{ subcategory.title }} {{ subcategory.category.title }}
+
+    ul.last-ads
+      li.last-ads-item(v-for="ad in ads")
+        span.star S
+        span.image I
+        span.ad-title: a(href="{{ad.url}}") {{ad.title}}
+        span.ad-category ss
+        span.ad-date {{ad.date}}
 </template>
 
 <script>
@@ -55,7 +97,8 @@
 
   var data = {
     openAccordion: -1,
-    menu: ''
+    menu: '',
+    ads: []
   }
   export default {
     data () {
@@ -73,6 +116,13 @@
     ready () {
       io.socket.get('/category/find/', (data) => {
         this.menu = data
+      })
+
+      io.socket.get('/ad/find', (data) => {
+        let dataLength = data.length - 1
+        for (let i = dataLength; i > (dataLength - 15); i--) {
+          this.ads.push(data[i])
+        }
       })
     }
   }
